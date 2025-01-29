@@ -20,7 +20,7 @@ extension GlassWidget<T extends Widget> on T {
             clipBehavior: clipBehaviour,
             borderRadius: clipBorderRadius,
             child: BackdropFilter(
-              filter: new ImageFilter.blur(
+              filter: ImageFilter.blur(
                 sigmaX: blurX,
                 sigmaY: blurY,
                 tileMode: tileMode,

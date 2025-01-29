@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class EventTicketScreen extends StatefulWidget {
-  const EventTicketScreen({Key? key}) : super(key: key);
+  const EventTicketScreen({super.key});
 
   @override
   State<EventTicketScreen> createState() => _EventTicketScreenState();
@@ -206,9 +206,9 @@ class _EventTicketScreenState extends State<EventTicketScreen> {
                 });
               },
               activeColor: const Color(0xFFFF69B4),
-              fillColor: MaterialStateProperty.resolveWith<Color>(
-                    (Set<MaterialState> states) {
-                  if (states.contains(MaterialState.selected)) {
+              fillColor: WidgetStateProperty.resolveWith<Color>(
+                    (Set<WidgetState> states) {
+                  if (states.contains(WidgetState.selected)) {
                     return const Color(0xFFFF69B4);
                   }
                   return Colors.grey;
