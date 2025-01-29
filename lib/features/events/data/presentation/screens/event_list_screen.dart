@@ -170,6 +170,10 @@ Widget _buildSectionHeader(String title) {
           'See More',
           style: AppTypography.subtitle,
         ),
+        // Text(
+        //   'See More',
+        //   style: AppTypography.subtitle,
+        // ),
       ],
     ),
   );
