@@ -40,7 +40,7 @@ class EventCard extends StatelessWidget {
                     borderRadius: BorderRadius.circular(10),
                     gradient: LinearGradient(
                       colors: [
-                        const Color(0xff2828284d),
+                         Colors.transparent,
                         const Color(0xff484848).withOpacity(0.5),
                       ],
                     ),
