@@ -1,0 +1,48 @@
+name: Ticket CI
+
+on:
+  push:
+    branches:
+      - main
+     
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout repository
+        uses: actions/checkout@v3
+
+      - name: 🚀 Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: 3.x
+
+      - name: 📦 Install dependencies
+        run: flutter pub get
+
+      - name: 🔍 Run Flutter analyze
+        run: flutter analyze
+
+      - name: 🧪 Run tests
+        run: flutter test
+
+      - name: 📦 Build APK
+        run: |
+          if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
+            echo "🏗️ Building Release APK..."
+            flutter build apk --release
+          else
+            echo "⚙️ Building Debug APK..."
+            flutter build apk --debug
+          fi
+
+      - name: 📤 Upload APK Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ github.ref_name }}-apk
+          path: build/app/outputs/flutter-apk/*.apk
