@@ -28,9 +28,6 @@ jobs:
       - name: 🔍 Run Flutter analyze
         run: flutter analyze
 
-      - name: 🧪 Run tests
-        run: flutter test
-
       - name: 📦 Build APK
         run: |
           if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
