@@ -2,14 +2,28 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:ticket_app_flutter/core/config/app_images.dart';
 import 'package:ticket_app_flutter/shared/extensions/media_query_context_extension.dart';
 import 'package:ticket_app_flutter/shared/extensions/sized_box_num_extension.dart';
 import 'package:ticket_app_flutter/shared/themes/colors.dart';
 import 'package:ticket_app_flutter/shared/themes/typography.dart';
 
 class EventCard extends StatelessWidget {
-  const EventCard({super.key});
+  final String title;
+  final String organizer;
+  final String location;
+  final String date;
+  final String price;
+  final String image;
+
+  const EventCard({
+    super.key,
+    required this.title,
+    required this.organizer,
+    required this.location,
+    required this.date,
+    required this.price,
+    required this.image,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -21,8 +35,8 @@ class EventCard extends StatelessWidget {
         decoration: BoxDecoration(
           border: Border.all(color: AppColors.darkGrey, width: 3),
           borderRadius: BorderRadius.circular(16),
-          image: const DecorationImage(
-            image: AssetImage(splash),
+          image: DecorationImage(
+            image: AssetImage(image),
             fit: BoxFit.cover,
           ),
         ),
@@ -40,7 +54,7 @@ class EventCard extends StatelessWidget {
                     borderRadius: BorderRadius.circular(10),
                     gradient: LinearGradient(
                       colors: [
-                         Colors.transparent,
+                        Colors.transparent,
                         const Color(0xff484848).withOpacity(0.5),
                       ],
                     ),
@@ -48,10 +62,7 @@ class EventCard extends StatelessWidget {
                   ),
                   child: ClipRRect(
                     child: BackdropFilter(
-                      filter: ImageFilter.blur(
-                        sigmaX: 1.0,
-                        sigmaY: 1.0,
-                      ),
+                      filter: ImageFilter.blur(sigmaX: 1.0, sigmaY: 1.0),
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Column(
@@ -61,14 +72,15 @@ class EventCard extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      'Splash & Chill',
+                                      title,
                                       style: AppTypography.headline
                                           .copyWith(fontSize: 14),
                                     ),
                                     Text(
-                                      'Eagle King ent.',
+                                      organizer,
                                       style: AppTypography.subtitle.copyWith(
                                         fontSize: 12,
                                         fontWeight: FontWeight.bold,
@@ -77,9 +89,9 @@ class EventCard extends StatelessWidget {
                                   ],
                                 ),
                                 Text(
-                                  '\$9.99',
+                                  price,
                                   style: AppTypography.priceStyle,
-                                )
+                                ),
                               ],
                             ),
                             4.spaceHeight(),
@@ -87,21 +99,21 @@ class EventCard extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  'Cotonou',
+                                  location,
                                   style: AppTypography.body.copyWith(
                                     fontSize: 12,
-                                    fontWeight: FontWeight.bold
+                                    fontWeight: FontWeight.bold,
                                   ),
                                 ),
                                 Text(
-                                  '22 December 2024',
+                                  date,
                                   style: AppTypography.body.copyWith(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.bold
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.bold,
                                   ),
                                 ),
                               ],
-                            )
+                            ),
                           ],
                         ),
                       ),

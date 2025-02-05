@@ -131,18 +131,22 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
           child: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Container(
-                  width: double.infinity,
-                  height: context.screenHeight * 0.35,
-                  decoration: BoxDecoration(
-                    border: Border.all(color: AppColors.darkGrey, width: 5),
-                    borderRadius: BorderRadius.circular(16),
-                    image: const DecorationImage(
-                      image: AssetImage(splash),
-                      fit: BoxFit.cover,
+                Hero(
+                  tag: '\$9.99',
+                  child: Container(
+                    width: double.infinity,
+                    height: context.screenHeight * 0.35,
+                    decoration: BoxDecoration(
+                      border: Border.all(color: AppColors.darkGrey, width: 5),
+                      borderRadius: BorderRadius.circular(16),
+                      image: const DecorationImage(
+                        image: AssetImage(splash),
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ),
                 ),

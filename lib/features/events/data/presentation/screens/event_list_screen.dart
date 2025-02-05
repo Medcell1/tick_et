@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:ticket_app_flutter/core/config/app_icons.dart';
 import 'package:ticket_app_flutter/features/events/data/presentation/widgets/event_card.dart';
 import 'package:ticket_app_flutter/features/events/data/presentation/widgets/event_category_pill.dart';
@@ -7,6 +8,7 @@ import 'package:ticket_app_flutter/shared/extensions/sized_box_num_extension.dar
 import 'package:ticket_app_flutter/shared/themes/typography.dart';
 import 'package:ticket_app_flutter/shared/widgets/gradient_scaffold.dart';
 import 'package:ticket_app_flutter/shared/widgets/svg_icon.dart';
+import '../../../../../core/config/app_images.dart';
 import '../../../../../shared/themes/colors.dart';
 
 class EventListScreen extends StatelessWidget {
@@ -14,6 +16,32 @@ class EventListScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const List<Map<String, String>> dummyEvents = [
+      {
+        'title': 'Splash & Chill',
+        'organizer': 'Eagle King ent.',
+        'location': 'Cotonou',
+        'date': '22 December 2024',
+        'price': '\$9.99',
+        'image': splash,
+      },
+      {
+        'title': 'Music Fiesta',
+        'organizer': 'Vibe Nation',
+        'location': 'Lagos',
+        'date': '5 January 2025',
+        'price': '\$15.00',
+        'image': splash,
+      },
+      {
+        'title': 'Comedy Night',
+        'organizer': 'Laugh Masters',
+        'location': 'Accra',
+        'date': '14 February 2025',
+        'price': '\$8.00',
+        'image': splash,
+      },
+    ];
     return GradientScaffold(
       child: Scaffold(
         backgroundColor: Colors.transparent,
@@ -21,7 +49,7 @@ class EventListScreen extends StatelessWidget {
           backgroundColor: Colors.transparent,
           elevation: 0,
           title: Text(
-            'Hey Mikky',
+            'Welcome,',
             style: AppTypography.headline.copyWith(fontSize: 17),
           ),
           actions: [
@@ -99,7 +127,7 @@ class EventListScreen extends StatelessWidget {
                 ),
               ),
               24.spaceHeight(),
-              _buildSectionHeader('Categories '),
+              _buildSectionHeader('Categories ', context, '/categories'),
               12.spaceHeight(),
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
@@ -121,21 +149,32 @@ class EventListScreen extends StatelessWidget {
                 ),
               ),
               24.spaceHeight(),
-              _buildSectionHeader('Trending'),
+              _buildSectionHeader('Trending', context, '/trending'),
               12.spaceHeight(),
               SizedBox(
                 height: context.screenHeight * 0.25,
                 child: ListView.builder(
-                  itemCount: 3,
+                  itemCount: dummyEvents.length,
                   physics: const BouncingScrollPhysics(),
                   scrollDirection: Axis.horizontal,
                   itemBuilder: (context, index) {
-                    return const EventCard();
+                    final event = dummyEvents[index];
+                    return Hero(
+                      tag: event['price']!,
+                      child: EventCard(
+                        title: event['title']!,
+                        organizer: event['organizer']!,
+                        location: event['location']!,
+                        date: event['date']!,
+                        price: event['price']!,
+                        image: event['image']!,
+                      ),
+                    );
                   },
                 ),
               ),
               24.spaceHeight(),
-              _buildSectionHeader('Vibes near me'),
+              _buildSectionHeader('Vibes near me', context, '/nearme'),
               12.spaceHeight(),
               SizedBox(
                 height: context.screenHeight * 0.25,
@@ -144,7 +183,15 @@ class EventListScreen extends StatelessWidget {
                   physics: const BouncingScrollPhysics(),
                   scrollDirection: Axis.horizontal,
                   itemBuilder: (context, index) {
-                    return const EventCard();
+                    final event = dummyEvents[index];
+                    return EventCard(
+                      title: event['title']!,
+                      organizer: event['organizer']!,
+                      location: event['location']!,
+                      date: event['date']!,
+                      price: event['price']!,
+                      image: event['image']!,
+                    );
                   },
                 ),
               ),
@@ -156,7 +203,7 @@ class EventListScreen extends StatelessWidget {
   }
 }
 
-Widget _buildSectionHeader(String title) {
+Widget _buildSectionHeader(String title, BuildContext context, String route) {
   return Padding(
     padding: const EdgeInsets.symmetric(horizontal: 20),
     child: Row(
@@ -166,11 +213,13 @@ Widget _buildSectionHeader(String title) {
           title,
           style: AppTypography.headline,
         ),
-        Text(
-          'See More',
-          style: AppTypography.subtitle,
+        GestureDetector(
+          onTap: () => context.push(route),
+          child: Text(
+            'See More',
+            style: AppTypography.subtitle,
+          ),
         ),
-
       ],
     ),
   );
