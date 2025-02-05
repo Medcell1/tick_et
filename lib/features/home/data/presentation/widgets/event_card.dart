@@ -2,47 +2,58 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:shimmer/shimmer.dart';
+import 'package:ticket_app_flutter/core/utils/globals.dart';
+import 'package:ticket_app_flutter/features/home/data/models/event.dart';
 import 'package:ticket_app_flutter/shared/extensions/media_query_context_extension.dart';
 import 'package:ticket_app_flutter/shared/extensions/sized_box_num_extension.dart';
 import 'package:ticket_app_flutter/shared/themes/colors.dart';
 import 'package:ticket_app_flutter/shared/themes/typography.dart';
 
 class EventCard extends StatelessWidget {
-  final String title;
-  final String organizer;
-  final String location;
-  final String date;
-  final String price;
-  final String image;
+  final Event event;
 
   const EventCard({
     super.key,
-    required this.title,
-    required this.organizer,
-    required this.location,
-    required this.date,
-    required this.price,
-    required this.image,
+    required this.event,
   });
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => context.push('/eventDetail'),
+      onTap: () => context.push('/events/${event.id}'),
       child: Container(
         width: context.screenWidth * 0.6,
         margin: const EdgeInsets.symmetric(horizontal: 8),
         decoration: BoxDecoration(
           border: Border.all(color: AppColors.darkGrey, width: 3),
           borderRadius: BorderRadius.circular(16),
-          image: DecorationImage(
-            image: AssetImage(image),
-            fit: BoxFit.cover,
-          ),
         ),
         child: Stack(
           alignment: Alignment.bottomCenter,
           children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(13),
+              child: CachedNetworkImage(
+                imageUrl: event.mediaUrls[0],
+                fit: BoxFit.cover,
+                width: double.infinity,
+                height: double.infinity,
+                placeholder: (context, url) => Shimmer.fromColors(
+                  baseColor: Colors.white.withOpacity(0.5),
+                  highlightColor: Colors.white.withOpacity(0.5),
+                  child: Container(
+                    width: double.infinity,
+                    height: double.infinity,
+                    color: Colors.white.withOpacity(0.1),
+                  ),
+                ),
+                errorWidget: (context, url, error) => const Center(
+                  child: Icon(Icons.broken_image, color: Colors.white70, size: 50),
+                ),
+              ),
+            ),
             Positioned(
               bottom: 10,
               child: Padding(
@@ -54,8 +65,8 @@ class EventCard extends StatelessWidget {
                     borderRadius: BorderRadius.circular(10),
                     gradient: LinearGradient(
                       colors: [
-                        Colors.transparent,
-                        const Color(0xff484848).withOpacity(0.5),
+                        AppColors.primaryDark.withOpacity(0.7),
+                        const Color(0xff484848).withOpacity(0.9),
                       ],
                     ),
                     border: Border.all(color: Colors.white, width: 0.5),
@@ -68,29 +79,21 @@ class EventCard extends StatelessWidget {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      title,
-                                      style: AppTypography.headline
-                                          .copyWith(fontSize: 14),
-                                    ),
-                                    Text(
-                                      organizer,
-                                      style: AppTypography.subtitle.copyWith(
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ],
+                                Text(
+                                  event.name,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: AppTypography.headline.copyWith(fontSize: 14),
                                 ),
                                 Text(
-                                  price,
-                                  style: AppTypography.priceStyle,
+                                  event.owner,
+                                  style: AppTypography.subtitle.copyWith(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                               ],
                             ),
@@ -98,15 +101,19 @@ class EventCard extends StatelessWidget {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text(
-                                  location,
-                                  style: AppTypography.body.copyWith(
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.bold,
+                                Flexible(
+                                  child: Text(
+                                    event.location,
+                                    style: AppTypography.body.copyWith(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
                                   ),
                                 ),
                                 Text(
-                                  date,
+                                  Globals.formatDate(event.date),
                                   style: AppTypography.body.copyWith(
                                     fontSize: 12,
                                     fontWeight: FontWeight.bold,
