@@ -38,13 +38,15 @@ class EventCategoryRepositoryImpl implements EventCategoryRepository {
   @override
   Future<Either<Failure, List<EventCategory>>> getFeaturedCategories() async {
     return _handleRequest<List<EventCategory>>(() async {
-      final response = await _dioService.dio.get('$eventUrl/categories/featured');
+      final response =
+          await _dioService.dio.get('$eventUrl/categories/featured');
       final List<dynamic> data = response.data['categories'];
       return data.map((json) => EventCategory.fromJson(json)).toList();
     });
   }
 
-  Future<Either<Failure, T>> _handleRequest<T>(Future<T> Function() request) async {
+  Future<Either<Failure, T>> _handleRequest<T>(
+      Future<T> Function() request) async {
     try {
       final result = await request();
       return right(result);

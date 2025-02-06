@@ -5,16 +5,21 @@ import 'package:provider/single_child_widget.dart';
 import 'package:ticket_app_flutter/features/categories/data/provider/categories_provider.dart';
 import 'package:ticket_app_flutter/features/home/data/providers/home_feed_provider.dart';
 import 'package:ticket_app_flutter/features/home/data/providers/view_event_provider.dart';
+import 'package:ticket_app_flutter/features/see_more/data/providers/see_more_provider.dart';
 
 class Globals {
   static List<SingleChildWidget> providers = [
     ChangeNotifierProvider<HomeFeedProvider>(
       create: (_) => HomeFeedProvider(),
     ),
-    ChangeNotifierProvider<EventCategoryProvider>(
-      create: (_) => EventCategoryProvider(),
-    ),  ChangeNotifierProvider<ViewEventProvider>(
+    ChangeNotifierProvider<EventCategoriesProvider>(
+      create: (_) => EventCategoriesProvider(),
+    ),
+    ChangeNotifierProvider<ViewEventProvider>(
       create: (_) => ViewEventProvider(),
+    ),
+    ChangeNotifierProvider<SeeMoreProvider>(
+      create: (_) => SeeMoreProvider(),
     ),
   ];
 

@@ -50,7 +50,8 @@ class EventCard extends StatelessWidget {
                   ),
                 ),
                 errorWidget: (context, url, error) => const Center(
-                  child: Icon(Icons.broken_image, color: Colors.white70, size: 50),
+                  child:
+                      Icon(Icons.broken_image, color: Colors.white70, size: 50),
                 ),
               ),
             ),
@@ -65,15 +66,16 @@ class EventCard extends StatelessWidget {
                     borderRadius: BorderRadius.circular(10),
                     gradient: LinearGradient(
                       colors: [
-                        AppColors.primaryDark.withOpacity(0.7),
+                        const Color(0xff484848).withOpacity(0.3),
                         const Color(0xff484848).withOpacity(0.9),
                       ],
                     ),
                     border: Border.all(color: Colors.white, width: 0.5),
                   ),
                   child: ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
                     child: BackdropFilter(
-                      filter: ImageFilter.blur(sigmaX: 1.0, sigmaY: 1.0),
+                      filter: ImageFilter.blur(sigmaX: 2.0, sigmaY: 2.0),
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Column(
@@ -86,14 +88,15 @@ class EventCard extends StatelessWidget {
                                   event.name,
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
-                                  style: AppTypography.headline.copyWith(fontSize: 14),
+                                  style: AppTypography.headline
+                                      .copyWith(fontSize: 14),
                                 ),
                                 Text(
                                   event.owner,
                                   style: AppTypography.subtitle.copyWith(
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                                      fontSize: 11,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white),
                                 ),
                               ],
                             ),

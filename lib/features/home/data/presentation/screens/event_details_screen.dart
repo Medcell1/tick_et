@@ -50,16 +50,16 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
             body: showLoading
                 ? _buildLoadingContent(context)
                 : provider.error != null
-                ? _buildErrorContent(provider.error!)
-                : _buildEventDetailsContent(provider.eventDetails!),
+                    ? _buildErrorContent(provider.error!)
+                    : _buildEventDetailsContent(provider.eventDetails!),
           ),
         );
       },
     );
   }
 
-  PreferredSizeWidget _buildAppBar(BuildContext context,
-      ViewEventProvider provider) {
+  PreferredSizeWidget _buildAppBar(
+      BuildContext context, ViewEventProvider provider) {
     return AppBar(
       backgroundColor: Colors.transparent,
       automaticallyImplyLeading: false,
@@ -287,40 +287,33 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Hero(
-              tag: event.id,
-              child: Container(
-                  width: double.infinity,
-                  height: context.screenHeight * 0.35,
-                  decoration: BoxDecoration(
-                    border: Border.all(color: AppColors.darkGrey, width: 5),
-                    borderRadius: BorderRadius.circular(16),
-
-                  ),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(16),
-                    child: CachedNetworkImage(
-                      
-                      imageUrl: event.mediaUrls[0],
-                      fit: BoxFit.cover,
-                      placeholder: (context, url) =>
-                          Shimmer.fromColors(
-                            baseColor: Colors.white.withOpacity(0.3),
-                            highlightColor: Colors.white.withOpacity(0.6),
-                            child: Container(
-                              width: double.infinity,
-                              height: context.screenHeight * 0.35,
-                              decoration: BoxDecoration(
-                                color: Colors.white.withOpacity(0.2),
-                                borderRadius: BorderRadius.circular(16),
-                              ),
-                            ),
-                          ),
-                      errorWidget: (context, url, error) =>
-                      const Icon(Icons.error, color: Colors.red),
+            Container(
+              width: double.infinity,
+              height: context.screenHeight * 0.35,
+              decoration: BoxDecoration(
+                border: Border.all(color: AppColors.darkGrey, width: 5),
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(16),
+                child: CachedNetworkImage(
+                  imageUrl: event.mediaUrls[0],
+                  fit: BoxFit.cover,
+                  placeholder: (context, url) => Shimmer.fromColors(
+                    baseColor: Colors.white.withOpacity(0.3),
+                    highlightColor: Colors.white.withOpacity(0.6),
+                    child: Container(
+                      width: double.infinity,
+                      height: context.screenHeight * 0.35,
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.2),
+                        borderRadius: BorderRadius.circular(16),
+                      ),
                     ),
                   ),
-
+                  errorWidget: (context, url, error) =>
+                      const Icon(Icons.error, color: Colors.red),
+                ),
               ),
             ),
             10.spaceHeight(),
@@ -342,13 +335,13 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
             Text(
               event.owner,
               style:
-              AppTypography.subtitle.copyWith(fontWeight: FontWeight.bold),
+                  AppTypography.subtitle.copyWith(fontWeight: FontWeight.bold),
             ),
             15.spaceHeight(),
             Text(
               event.description,
               style:
-              AppTypography.subtitle.copyWith(fontWeight: FontWeight.bold),
+                  AppTypography.subtitle.copyWith(fontWeight: FontWeight.bold),
             ),
             20.spaceHeight(),
             _buildInfoRow(
@@ -370,14 +363,11 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
               style: AppTypography.headline.copyWith(fontSize: 20),
             ),
             15.spaceHeight(),
-            ...event.ticketTypes
-                .asMap()
-                .entries
-                .map((entry) {
+            ...event.ticketTypes.asMap().entries.map((entry) {
               final ticketTypeEither = entry.value;
               return ticketTypeEither.fold(
-                      (error) => Container(),
-                      (ticketType) =>
+                  (error) => Container(),
+                  (ticketType) =>
                       _buildTicketOption(context, entry.key, ticketType));
             }),
             20.spaceHeight(),
@@ -398,10 +388,12 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
     );
   }
 
-  Widget _buildInfoRow(BuildContext context,
-      String iconPath,
-      String label,
-      String value,) {
+  Widget _buildInfoRow(
+    BuildContext context,
+    String iconPath,
+    String label,
+    String value,
+  ) {
     return Row(
       children: [
         Container(
@@ -441,8 +433,8 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
     );
   }
 
-  Widget _buildTicketOption(BuildContext context, int index,
-      TicketType ticket) {
+  Widget _buildTicketOption(
+      BuildContext context, int index, TicketType ticket) {
     final isSelected = selectedTicketIndex == index;
 
     return GestureDetector(
@@ -471,7 +463,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
                 color: isSelected
-                    ? Colors.white.withOpacity(0.15)
+                    ? Colors.white.withOpacity(0.05)
                     : Colors.white.withOpacity(0.1),
                 borderRadius: BorderRadius.circular(16),
                 border: Border.all(

@@ -99,16 +99,17 @@ class _EventTicketScreenState extends State<EventTicketScreen> {
                 child: ElevatedButton(
                   onPressed: selectedTicketIndex != null
                       ? () {
-                    // Handle ticket purchase
-                    final selectedTicket = ticketOptions[selectedTicketIndex!];
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(
-                          'Selected ${selectedTicket.title} ticket for \$${selectedTicket.price}',
-                        ),
-                      ),
-                    );
-                  }
+                          // Handle ticket purchase
+                          final selectedTicket =
+                              ticketOptions[selectedTicketIndex!];
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                'Selected ${selectedTicket.title} ticket for \$${selectedTicket.price}',
+                              ),
+                            ),
+                          );
+                        }
                       : null,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFFFF69B4),
@@ -188,7 +189,9 @@ class _EventTicketScreenState extends State<EventTicketScreen> {
         margin: const EdgeInsets.only(bottom: 16),
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: isSelected ? Colors.white.withOpacity(0.1) : Colors.white.withOpacity(0.05),
+          color: isSelected
+              ? Colors.white.withOpacity(0.1)
+              : Colors.white.withOpacity(0.05),
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
             color: isSelected ? const Color(0xFFFF69B4) : Colors.transparent,
@@ -207,7 +210,7 @@ class _EventTicketScreenState extends State<EventTicketScreen> {
               },
               activeColor: const Color(0xFFFF69B4),
               fillColor: WidgetStateProperty.resolveWith<Color>(
-                    (Set<WidgetState> states) {
+                (Set<WidgetState> states) {
                   if (states.contains(WidgetState.selected)) {
                     return const Color(0xFFFF69B4);
                   }

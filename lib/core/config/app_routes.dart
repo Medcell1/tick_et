@@ -1,4 +1,4 @@
- class AppRoutes {
+class AppRoutes {
   static const String homeName = 'home';
   static const String homePath = '/';
 

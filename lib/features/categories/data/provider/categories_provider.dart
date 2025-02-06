@@ -1,61 +1,98 @@
 import 'package:flutter/material.dart';
+import 'package:ticket_app_flutter/core/config/locator.dart';
+import 'package:ticket_app_flutter/features/categories/data/repositories/category_repository.dart';
+import 'package:ticket_app_flutter/features/home/data/repositories/events_repository.dart';
 
-import '../../../../core/config/locator.dart';
+import '../../../home/data/models/event.dart';
 import '../models/event_category.dart';
-import '../repositories/category_repository.dart';
 
-class EventCategoryProvider extends ChangeNotifier {
-  final EventCategoryRepository _repository = getIt<EventCategoryRepositoryImpl>();
+class EventCategoriesProvider with ChangeNotifier {
+  final EventsRepositoryImpl _eventsRepository = getIt<EventsRepositoryImpl>();
+  final EventCategoryRepositoryImpl _categoriesRepo =
+      getIt<EventCategoryRepositoryImpl>();
 
-  List<EventCategory> categories = [];
-  List<EventCategory> featuredCategories = [];
-  Map<String, EventCategory> categoryDetails = {};
+  List<EventCategory> _categories = [];
+  List<EventCategory> get categories => _categories;
 
-  bool isLoading = false;
-  String? error;
+  List<Event> _events = [];
+  List<Event> get events => _events;
 
-  Future<void> loadAllCategories() async {
-    isLoading = true;
-    error = null;
+  List<String> _selectedCategories = [];
+  List<String> get selectedCategories => _selectedCategories;
+
+  bool _isLoadingCategories = false;
+  bool get isLoadingCategories => _isLoadingCategories;
+
+  bool _isLoadingEvents = false;
+  bool get isLoadingEvents => _isLoadingEvents;
+
+  String? _error;
+  String? get error => _error;
+
+  Future<void> loadCategories() async {
+    _isLoadingCategories = true;
+    _events = [];
+    _categories = [];
     notifyListeners();
 
-    final result = await _repository.getAllCategories();
+    final result = await _categoriesRepo.getAllCategories();
     result.fold(
-          (failure) => error = failure.message,
-          (data) => categories = data,
+      (failure) {
+        _error = failure.message;
+      },
+      (categories) {
+        _categories = categories;
+        if (_categories.isNotEmpty) {
+          if (selectedCategories.isEmpty) {
+            _selectedCategories.add(_categories.first.id);
+          } else {
+            toggleCategory(_selectedCategories);
+          }
+          loadEventsByCategory();
+        }
+      },
     );
 
-    isLoading = false;
+    _isLoadingCategories = false;
     notifyListeners();
   }
 
-  Future<void> loadFeaturedCategories() async {
-    final result = await _repository.getFeaturedCategories();
+  Future<void> loadEventsByCategory() async {
+    _isLoadingEvents = true;
+    notifyListeners();
+
+    final result =
+        await _eventsRepository.getEventsByCategory(_selectedCategories);
     result.fold(
-          (failure) => error = failure.message,
-          (data) => featuredCategories = data,
+      (failure) {
+        _error = failure.message;
+      },
+      (events) {
+        _events = events;
+      },
     );
 
+    _isLoadingEvents = false;
     notifyListeners();
   }
 
-  Future<EventCategory?> getCategoryDetails(String id) async {
-    if (categoryDetails.containsKey(id)) {
-      return categoryDetails[id];
+  void toggleCategory(dynamic categoryIds) {
+    if (categoryIds is String) {
+      // Handle single category ID
+      if (_selectedCategories.contains(categoryIds)) {
+        if (_selectedCategories.length > 1) {
+          _selectedCategories.remove(categoryIds);
+        }
+      } else {
+        _selectedCategories.add(categoryIds);
+      }
+    } else if (categoryIds is List<String>) {
+      _selectedCategories = categoryIds;
+    } else {
+      throw ArgumentError('categoryIds must be a String or List<String>');
     }
 
-    final result = await _repository.getCategoryById(id);
-    return result.fold(
-          (failure) {
-        error = failure.message;
-        notifyListeners();
-        return null;
-      },
-          (category) {
-        categoryDetails[id] = category;
-        notifyListeners();
-        return category;
-      },
-    );
+    notifyListeners();
+    loadEventsByCategory();
   }
 }

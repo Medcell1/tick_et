@@ -25,7 +25,6 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   Widget build(BuildContext context) {
     return GradientScaffold(
       child: Scaffold(
-
         backgroundColor: Colors.transparent,
         appBar: AppBar(
           backgroundColor: Colors.transparent,
@@ -80,7 +79,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
             children: [
               Expanded(
                 child: SingleChildScrollView(
-                  keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+                  keyboardDismissBehavior:
+                      ScrollViewKeyboardDismissBehavior.onDrag,
                   child: Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: Column(
@@ -182,12 +182,11 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                   color: Colors.white,
                                 ),
                               ),
-                             10.spaceHeight(),
+                              10.spaceHeight(),
                               TextField(
                                 decoration: InputDecoration(
                                   hintText: 'John Doe',
-                                  hintStyle:
-                                      AppTypography.subtitle,
+                                  hintStyle: AppTypography.subtitle,
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(12),
                                     borderSide: BorderSide(
@@ -212,8 +211,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                               TextField(
                                 decoration: InputDecoration(
                                   hintText: 'Email Address',
-                                  hintStyle:
-                                      AppTypography.subtitle,
+                                  hintStyle: AppTypography.subtitle,
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(12),
                                     borderSide: BorderSide(
@@ -229,9 +227,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                             ],
                           ),
                         ),
-
                         24.spaceHeight(),
-
                         Text(
                           'Payment Method',
                           style: AppTypography.headline.copyWith(
@@ -273,7 +269,6 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                             style: AppTypography.headline,
                           ),
                         )
-
                       ],
                     ),
                   ),
@@ -288,7 +283,6 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
 
   Widget _buildPaymentOption(String title, String value) {
     return RadioListTile<String>(
-
       title: Text(
         title,
         style: const TextStyle(color: Colors.white),

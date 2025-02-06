@@ -5,14 +5,17 @@ import '../../../../core/network/dio_client.dart';
 import '../../../../shared/models/failure.dart';
 import '../models/event.dart';
 
-
 abstract class EventsRepository {
   Future<Either<Failure, List<Event>>> getTrendingEvents();
-  Future<Either<Failure, List<Event>>> getNearbyEvents();
-  Future<Either<Failure, EventsHomeFeedResponse>> getHomeFeed();
-  Future<Either<Failure, List<Event>>> getEventsByCategory(String category);
-  Future<Either<Failure, Event>> getEventDetailsById(String id);
 
+  Future<Either<Failure, List<Event>>> getNearbyEvents();
+
+  Future<Either<Failure, EventsHomeFeedResponse>> getHomeFeed();
+
+  Future<Either<Failure, List<Event>>> getEventsByCategory(
+      List<String> categoryId);
+
+  Future<Either<Failure, Event>> getEventDetailsById(String id);
 }
 
 class EventsRepositoryImpl implements EventsRepository {
@@ -23,9 +26,9 @@ class EventsRepositoryImpl implements EventsRepository {
   @override
   Future<Either<Failure, List<Event>>> getTrendingEvents() async {
     return _handleRequest<List<Event>>(
-          () async {
-        final response = await _dioService.dio.get('/events/trending');
-        final List<dynamic> data = response.data['events'];
+      () async {
+        final response = await _dioService.dio.get('/events/feed');
+        final List<dynamic> data = response.data['trending'];
         return data.map((json) => Event.fromJson(json)).toList();
       },
     );
@@ -34,9 +37,9 @@ class EventsRepositoryImpl implements EventsRepository {
   @override
   Future<Either<Failure, List<Event>>> getNearbyEvents() async {
     return _handleRequest<List<Event>>(
-          () async {
-        final response = await _dioService.dio.get('/events/nearby');
-        final List<dynamic> data = response.data['events'];
+      () async {
+        final response = await _dioService.dio.get('/events/feed');
+        final List<dynamic> data = response.data['nearby'];
         return data.map((json) => Event.fromJson(json)).toList();
       },
     );
@@ -45,7 +48,7 @@ class EventsRepositoryImpl implements EventsRepository {
   @override
   Future<Either<Failure, EventsHomeFeedResponse>> getHomeFeed() async {
     return _handleRequest<EventsHomeFeedResponse>(
-          () async {
+      () async {
         final response = await _dioService.dio.get('/events/feed');
         return EventsHomeFeedResponse.fromJson(response.data);
       },
@@ -53,22 +56,26 @@ class EventsRepositoryImpl implements EventsRepository {
   }
 
   @override
-  Future<Either<Failure, List<Event>>> getEventsByCategory(String category) async {
+  Future<Either<Failure, List<Event>>> getEventsByCategory(
+      List<String> categoryIds) async {
     return _handleRequest<List<Event>>(
-          () async {
+      () async {
         final response = await _dioService.dio.get(
-          '/events/category',
-          queryParameters: {'category': category},
+          '/events',
+          queryParameters: {'categories': categoryIds.join(',')},
         );
-        final List<dynamic> data = response.data['events'];
-        return data.map((json) => Event.fromJson(json)).toList();
+        final List<dynamic> data = response.data;
+
+        final events = data.map((json) => Event.fromJson(json)).toList();
+        return events;
       },
     );
   }
+
   @override
   Future<Either<Failure, Event>> getEventDetailsById(String id) async {
     return _handleRequest<Event>(
-          () async {
+      () async {
         final response = await _dioService.dio.get(
           '/events/view/$id',
         );
@@ -78,7 +85,8 @@ class EventsRepositoryImpl implements EventsRepository {
     );
   }
 
-  Future<Either<Failure, T>> _handleRequest<T>(Future<T> Function() request) async {
+  Future<Either<Failure, T>> _handleRequest<T>(
+      Future<T> Function() request) async {
     try {
       final result = await request();
       return right(result);
@@ -99,6 +107,4 @@ class EventsRepositoryImpl implements EventsRepository {
         return Failure('Something went wrong. Please try again.');
     }
   }
-
-
 }

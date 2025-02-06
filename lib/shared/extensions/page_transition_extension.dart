@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:universal_platform/universal_platform.dart';
+
 extension PageTransition on Widget {
   Page<dynamic> pageTransition({
     required GoRouterState state,

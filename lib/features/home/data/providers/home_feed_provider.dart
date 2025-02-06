@@ -8,7 +8,7 @@ import '../../../../shared/models/failure.dart';
 import '../repositories/events_repository.dart';
 
 class HomeFeedProvider extends ChangeNotifier {
-  final EventsRepository _repository = getIt<EventsRepositoryImpl>();
+  final EventsRepositoryImpl _repository = getIt<EventsRepositoryImpl>();
   HomeFeed? homeFeed;
   bool isLoading = false;
   String? error;
@@ -22,20 +22,20 @@ class HomeFeedProvider extends ChangeNotifier {
     final homeFeedResult = await _repository.getHomeFeed();
 
     categoriesResult.fold(
-          (categoryFailure) {
+      (categoryFailure) {
         error = categoryFailure.message;
         isLoading = false;
         notifyListeners();
         return;
       },
-          (categories) {
+      (categories) {
         homeFeedResult.fold(
-              (homeFeedFailure) {
+          (homeFeedFailure) {
             error = homeFeedFailure.message;
             isLoading = false;
             notifyListeners();
           },
-              (homeFeedResponse) {
+          (homeFeedResponse) {
             homeFeed = HomeFeed(
               trending: homeFeedResponse.trending,
               nearby: homeFeedResponse.nearby,
@@ -49,6 +49,7 @@ class HomeFeedProvider extends ChangeNotifier {
       },
     );
   }
+
   Future<Either<Failure, List<EventCategory>>> getEventCategories() async {
     final categoriesRepo = getIt<EventCategoryRepositoryImpl>();
     return await categoriesRepo.getAllCategories();

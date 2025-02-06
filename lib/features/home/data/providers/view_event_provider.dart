@@ -5,7 +5,7 @@ import 'package:ticket_app_flutter/features/home/data/models/event.dart';
 import '../repositories/events_repository.dart';
 
 class ViewEventProvider extends ChangeNotifier {
-  final EventsRepository _repository = getIt<EventsRepositoryImpl>();
+  final EventsRepositoryImpl _repository = getIt<EventsRepositoryImpl>();
   bool isLoading = false;
   String? error;
   Event? eventDetails;
@@ -14,7 +14,7 @@ class ViewEventProvider extends ChangeNotifier {
     isLoading = true;
     error = null;
     notifyListeners();
-eventDetails = null;
+    eventDetails = null;
     final eventDetailsResult = await _repository.getEventDetailsById(id);
     eventDetailsResult.fold((failure) {
       error = failure.message;

@@ -156,15 +156,16 @@ class _EventListScreenState extends State<EventListScreen> {
                         (index) => const Skeletonizer(
                           enabled: true,
                           enableSwitchAnimation: true,
-
                           child: EventCategoryPill(
                             text: 'Pool Party',
+                            id: '',
                           ),
                         ),
                       )
                     : provider.homeFeed?.categories.map((category) {
                           return EventCategoryPill(
                             text: category.name,
+                            id: category.id,
                           );
                         }).toList() ??
                         [],
@@ -191,7 +192,11 @@ class _EventListScreenState extends State<EventListScreen> {
             child: provider.isLoading
                 ? _buildShimmerEventList()
                 : ListView.builder(
-                    itemCount: provider.homeFeed?.trending.length ?? 0,
+                    itemCount: provider.homeFeed?.nearby.length != null
+                        ? (provider.homeFeed!.nearby.length > 5
+                            ? 5
+                            : provider.homeFeed!.nearby.length)
+                        : 0,
                     physics: const BouncingScrollPhysics(),
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (context, index) {
@@ -227,7 +232,11 @@ class _EventListScreenState extends State<EventListScreen> {
           child: provider.isLoading
               ? _buildShimmerEventList()
               : ListView.builder(
-                  itemCount: provider.homeFeed?.nearby.length ?? 0,
+                  itemCount: provider.homeFeed?.nearby.length != null
+                      ? (provider.homeFeed!.nearby.length > 5
+                          ? 5
+                          : provider.homeFeed!.nearby.length)
+                      : 0,
                   physics: const BouncingScrollPhysics(),
                   scrollDirection: Axis.horizontal,
                   itemBuilder: (context, index) {
@@ -242,23 +251,6 @@ class _EventListScreenState extends State<EventListScreen> {
     );
   }
 
-  // Widget _buildShimmerCategoryPill() {
-  //   return Skeletonizer(
-  //     ignoreContainers: false,
-  //     enabled: true,
-  //     child: Container(
-  //       margin: const EdgeInsets.only(right: 8),
-  //       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-  //       decoration: BoxDecoration(
-  //         borderRadius: BorderRadius.circular(20),
-  //         color: Colors.white.withOpacity(0.1),
-  //       ),
-  //       width: 120,
-  //       height: 36,
-  //     ),
-  //   );
-  // }
-
   Widget _buildShimmerEventList() {
     return ListView.builder(
       itemCount: 3,
@@ -268,10 +260,9 @@ class _EventListScreenState extends State<EventListScreen> {
         highlightColor: Colors.white.withOpacity(0.5),
         child: Container(
           margin: const EdgeInsets.only(left: 16),
-          width: 280,
+          width: context.screenWidth * 0.6,
           decoration: BoxDecoration(
             color: Colors.white.withOpacity(0.1),
-
             borderRadius: BorderRadius.circular(16),
           ),
         ),

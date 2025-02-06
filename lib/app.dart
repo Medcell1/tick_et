@@ -4,7 +4,6 @@ import 'package:ticket_app_flutter/core/config/router.dart';
 
 import 'core/utils/globals.dart';
 
-
 class App extends StatelessWidget {
   const App({super.key});
 
@@ -13,7 +12,6 @@ class App extends StatelessWidget {
     return MultiProvider(
       providers: Globals.providers,
       child: MaterialApp.router(
-
         title: 'Tickets App',
         routerConfig: router,
         debugShowCheckedModeBanner: false,

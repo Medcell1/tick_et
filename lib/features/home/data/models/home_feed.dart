@@ -12,5 +12,4 @@ class HomeFeed {
     required this.nearby,
     required this.categories,
   });
-
 }

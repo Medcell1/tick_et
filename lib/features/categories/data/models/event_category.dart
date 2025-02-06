@@ -30,6 +30,11 @@ class EventCategory {
   }
 
   factory EventCategory.sampleData() {
-    return EventCategory(id: 'id', name: 'name', description: 'description', imageUrl: 'imageUrl',);
+    return EventCategory(
+      id: 'id',
+      name: 'name',
+      description: 'description',
+      imageUrl: 'imageUrl',
+    );
   }
 }

@@ -1,82 +1,35 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:ticket_app_flutter/core/config/app_images.dart';
+import 'package:provider/provider.dart';
+import 'package:skeletonizer/skeletonizer.dart';
+import 'package:ticket_app_flutter/features/categories/data/provider/categories_provider.dart';
+
+import '../../../../../shared/themes/colors.dart';
 import '../../../../../shared/themes/typography.dart';
 import '../../../../../shared/widgets/gradient_scaffold.dart';
-import '../../../../../shared/themes/colors.dart';
-import '../../../../see_more/presentation/widgets/see_more_event_card.dart';
+import '../../../../see_more/data/presentation/widgets/see_more_event_card.dart';
 
 class CategoriesScreen extends StatefulWidget {
-  const CategoriesScreen({super.key});
+  final String? selectedCategoryId;
+
+  const CategoriesScreen({super.key, this.selectedCategoryId});
 
   @override
-  _CategoriesScreenState createState() => _CategoriesScreenState();
+  State<CategoriesScreen> createState() => _CategoriesScreenState();
 }
 
 class _CategoriesScreenState extends State<CategoriesScreen> {
-  final List<String> categories = [
-    'Music',
-    'Sports',
-    'Art',
-    'Tech',
-    'Food',
-    'Comedy'
-  ];
-
-  final List<String> selectedCategories = [];
-
-  final List<Map<String, String>> allEvents = [
-    {
-      'title': 'Summer Music Festival',
-      'category': 'Music',
-      'organizer': 'Local Music Org',
-      'location': 'City Park',
-      'date': 'Aug 15, 2024',
-      'price': '\$50',
-      'image': splash,
-    },
-    {
-      'title': 'Tech Conference',
-      'category': 'Tech',
-      'organizer': 'Tech Innovators',
-      'location': 'Convention Center',
-      'date': 'Sept 20, 2024',
-      'price': '\$100',
-      'image': splash,
-    },
-    {
-      'title': 'Comedy Night',
-      'category': 'Comedy',
-      'organizer': 'Laugh Factory',
-      'location': 'Downtown Theater',
-      'date': 'July 10, 2024',
-      'price': '\$35',
-      'image': splash,
-    },
-  ];
-
-  List<Map<String, String>> get filteredEvents {
-    return allEvents
-        .where((event) => selectedCategories.contains(event['category']))
-        .toList();
-  }
-
-  void _toggleCategory(String category) {
-    setState(() {
-      if (selectedCategories.contains(category)) {
-        if (selectedCategories.length > 1) {
-          selectedCategories.remove(category);
-        }
-      } else {
-        selectedCategories.add(category);
-      }
-    });
-  }
-
   @override
   void initState() {
     super.initState();
-    selectedCategories.add(categories.first);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final provider =
+          Provider.of<EventCategoriesProvider>(context, listen: false);
+      provider.loadCategories().then((_) {
+        if (widget.selectedCategoryId != null) {
+          provider.toggleCategory(widget.selectedCategoryId!);
+        }
+      });
+    });
   }
 
   @override
@@ -94,7 +47,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
           leading: Padding(
             padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 3),
             child: GestureDetector(
-              onTap: () => context.pop(),
+              onTap: () => Navigator.pop(context),
               child: Container(
                 margin: const EdgeInsets.only(left: 10),
                 decoration: BoxDecoration(
@@ -112,40 +65,59 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
             ),
           ),
         ),
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              padding: const EdgeInsets.all(16),
-              child: Row(
-                children: categories
-                    .map((category) => GestureDetector(
-                          onTap: () => _toggleCategory(category),
-                          child: EventCategoryChips(
-                            text: category,
-                            isSelected: selectedCategories.contains(category),
-                          ),
-                        ))
-                    .toList(),
-              ),
-            ),
-            Expanded(
-              child: ListView(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                children: filteredEvents
-                    .map((event) => SeeMoreEventCard(
-                          title: event['title']!,
-                          organizer: event['organizer']!,
-                          location: event['location']!,
-                          date: event['date']!,
-                          price: event['price']!,
-                          image: event['image']!,
-                        ))
-                    .toList(),
-              ),
-            ),
-          ],
+        body: Consumer<EventCategoriesProvider>(
+          builder: (context, provider, child) {
+            if (provider.error != null) {
+              return Center(
+                child: Text(
+                  provider.error!,
+                  style: AppTypography.headline.copyWith(color: Colors.red),
+                ),
+              );
+            }
+
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Skeletonizer(
+                  enabled: provider.isLoadingEvents,
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    padding: const EdgeInsets.all(16),
+                    child: Row(
+                      children: provider.categories
+                          .map((category) => GestureDetector(
+                                onTap: () =>
+                                    provider.toggleCategory(category.id),
+                                child: EventCategoryChips(
+                                  text: category.name,
+                                  isSelected: provider.selectedCategories
+                                      .contains(category.id),
+                                ),
+                              ))
+                          .toList(),
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: Skeletonizer(
+                    enabled: provider.isLoadingEvents,
+                    child: ListView.builder(
+                      itemCount: provider.events.length,
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      itemBuilder: (context, index) {
+                        final event = provider.events[index];
+                        return SeeMoreEventCard(
+                          event: event,
+                          key: ValueKey(event.id),
+                        );
+                      },
+                    ),
+                  ),
+                ),
+              ],
+            );
+          },
         ),
       ),
     );
@@ -156,8 +128,11 @@ class EventCategoryChips extends StatelessWidget {
   final String text;
   final bool isSelected;
 
-  const EventCategoryChips(
-      {super.key, required this.text, this.isSelected = false});
+  const EventCategoryChips({
+    super.key,
+    required this.text,
+    this.isSelected = false,
+  });
 
   @override
   Widget build(BuildContext context) {
