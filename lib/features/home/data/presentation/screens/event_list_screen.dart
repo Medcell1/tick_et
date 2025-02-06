@@ -11,7 +11,10 @@ import 'package:ticket_app_flutter/shared/extensions/sized_box_num_extension.dar
 import 'package:ticket_app_flutter/shared/themes/typography.dart';
 import 'package:ticket_app_flutter/shared/widgets/gradient_scaffold.dart';
 import 'package:ticket_app_flutter/shared/widgets/svg_icon.dart';
+
 import '../../../../../shared/themes/colors.dart';
+import '../../../../see_more/data/presentation/widgets/see_more_event_card.dart';
+import '../../models/event.dart';
 import '../../providers/home_feed_provider.dart';
 
 class EventListScreen extends StatefulWidget {
@@ -58,6 +61,8 @@ class _EventListScreenState extends State<EventListScreen> {
                   _buildTrendingSection(provider),
                   24.spaceHeight(),
                   _buildNearbySection(provider),
+                  24.spaceHeight(),
+                  _buildFeedSection(provider),
                 ],
               ),
             );
@@ -246,6 +251,34 @@ class _EventListScreenState extends State<EventListScreen> {
                     );
                   },
                 ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildFeedSection(HomeFeedProvider provider) {
+    return Column(
+      children: [
+        _buildSectionHeader('Feed', context, '/feed'),
+        12.spaceHeight(),
+        Skeletonizer(
+          enabled: provider.isLoading,
+          child: ListView.builder(
+            itemCount: provider.homeFeed?.trending.length ?? 5,
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemBuilder: (context, index) {
+              final events = provider.homeFeed?.trending ??
+                  List.generate(5, (index) => Event.sampleData());
+              final event = events[index];
+
+              return SeeMoreEventCard(
+                event: event,
+                key: ValueKey(event.id),
+              );
+            },
+          ),
         ),
       ],
     );

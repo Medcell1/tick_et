@@ -1,0 +1,47 @@
+class CommonFormControlNames {
+  const CommonFormControlNames._();
+
+  static const String fullName = 'full_name';
+  static const String firstName = 'first_name';
+  static const String lastName = 'last_name';
+  static const String email = 'email';
+  static const String newTraiderEmail = 'new_traider_email';
+  static const String password = 'password';
+  static const String roles = 'roles';
+  static const String language = 'language';
+  static const String currency = 'currency';
+  static const String addressLine1 = 'address_line1';
+  static const String addressLine2 = 'address_line2';
+  static const String addressLine3 = 'address_line3';
+  static const String city = 'city';
+  static const String zipCode = 'zip_code';
+  static const String region = 'region';
+  static const String country = 'country';
+  static const String companyName = 'company_name';
+  static const String billingAddress = 'billing_address';
+  static const String deliveryAddress = 'delivery_address';
+  static const String registeredAddress = 'registered_address';
+  static const String phoneNumber = 'phone_number';
+  static const String billingAddressId = 'billing_address_id';
+  static const String deliveryAddressId = 'delivery_address_id';
+  static const String registeredAddressId = 'registered_address_id';
+  static const String registrationNumber = 'registration_number';
+  static const String taxNumber = 'tax_number';
+  static const String licenseNumber = 'license_number';
+  static const String timeZone = 'time_zone';
+  static const String rules = 'rules';
+  static const String repeatPassword = 'repeat_password';
+  static const String isStrong = 'is_strong';
+  static const String message = 'message';
+  static const String buyingCompany = 'buying_company';
+  static const String buyingCompanyId = 'buying_company_id';
+  static const String quantity = 'quantity';
+  static const String price = 'price';
+  static const String tax = 'tax';
+  static const String discount = 'discount';
+  static const String organisationName = 'organisation_name';
+  static const String currentPassword = 'current_password';
+  static const String newPassword = 'new_password';
+  static const String repeatNewPassword = 'repeat_new_password';
+  static const String otp = 'otp';
+}

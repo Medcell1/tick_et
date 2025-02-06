@@ -56,6 +56,7 @@ class EventCategoryRepositoryImpl implements EventCategoryRepository {
   }
 
   Failure _handleDioError(DioException e) {
+    print('OMo-Error: ${e.type}');
     switch (e.type) {
       case DioExceptionType.connectionTimeout:
       case DioExceptionType.sendTimeout:

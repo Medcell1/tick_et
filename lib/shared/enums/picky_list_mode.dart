@@ -1,0 +1,4 @@
+enum PickyListMode {
+  modalSheet,
+  fullPage,
+}

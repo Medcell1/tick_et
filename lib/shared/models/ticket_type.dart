@@ -25,4 +25,15 @@ class TicketType {
       createdBy: json['createdBy'] as String,
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      '_id': id,
+      'price': price,
+      'name': name,
+      'description': description,
+      'codePrefix': codePrefix,
+      'createdBy': createdBy,
+    };
+  }
 }

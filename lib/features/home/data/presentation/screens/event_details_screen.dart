@@ -1,4 +1,5 @@
 import 'dart:ui';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -12,6 +13,7 @@ import 'package:ticket_app_flutter/shared/themes/typography.dart';
 import 'package:ticket_app_flutter/shared/widgets/custom_button.dart';
 import 'package:ticket_app_flutter/shared/widgets/gradient_scaffold.dart';
 import 'package:ticket_app_flutter/shared/widgets/svg_icon.dart';
+
 import '../../../../../core/utils/globals.dart';
 import '../../../../../shared/models/ticket_type.dart';
 import '../../../../../shared/themes/colors.dart';
@@ -372,15 +374,31 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
             }),
             20.spaceHeight(),
             CustomButton(
-                content: Text(
-                  'BOOK NOW',
-                  style: AppTypography.headline,
-                ),
-                onPressed: () {
-                  selectedTicketIndex != null
-                      ? context.push('/checkout')
-                      : null;
-                }),
+              content: Text(
+                'BOOK NOW',
+                style: AppTypography.headline,
+              ),
+              onPressed: selectedTicketIndex != null
+                  ? () {
+                      context.pushNamed(
+                        'checkout',
+                        queryParameters: {
+                          'eventId': event.id,
+                          'ticketTypeId':
+                              event.ticketTypes[selectedTicketIndex!].fold(
+                            (l) => l,
+                            (r) => r.id,
+                          ),
+                        },
+                        extra: {
+                          'event': event.toJson(),
+                          'ticketType': event.ticketTypes[selectedTicketIndex!]
+                              .fold((l) => null, (r) => r.toJson()),
+                        },
+                      );
+                    }
+                  : null,
+            ),
             20.spaceHeight(),
           ],
         ),

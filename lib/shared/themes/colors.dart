@@ -9,4 +9,11 @@ class AppColors {
   static const Color textPrimary = Colors.white;
   static const Color textSecondary = Color(0xFFB0B0C3);
   static const Color darkGrey = Color(0xff3C3C3C);
+
+  //
+  static const greyScale92 = Color(0xffE6E6EB);
+
+  //
+  static const disabledTextFieldColor = greyScale92;
+  static const enabledTextFieldColor = Colors.white;
 }

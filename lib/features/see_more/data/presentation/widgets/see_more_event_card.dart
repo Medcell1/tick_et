@@ -72,22 +72,11 @@ class SeeMoreEventCard extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              event.name,
-                              style: AppTypography.headline,
-                              overflow: TextOverflow.ellipsis,
-                              maxLines: 1,
-                            ),
-                            // Text(
-                            //   price,
-                            //   style: AppTypography.priceStyle.copyWith(fontSize: 25),
-                            //   overflow: TextOverflow.ellipsis,
-                            //   maxLines: 1,
-                            // ),
-                          ],
+                        Text(
+                          event.name,
+                          style: AppTypography.headline,
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
                         ),
                         const SizedBox(height: 4),
                         Text(

@@ -62,6 +62,48 @@ class Event {
       mediaUrls: List<String>.from(json['mediaUrls']),
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      '_id': id,
+      'name': name,
+      'owner': owner,
+      'description': description,
+      'location': location,
+      'date': date.toString(),
+      'categories':
+          categories.map((e) => e.fold((l) => l, (r) => r.toJson())).toList(),
+      'ticketTypes':
+          ticketTypes.map((e) => e.fold((l) => l, (r) => r.toJson())).toList(),
+      'createdBy': createdBy.fold((l) => l, (r) => r.toJson()),
+      'createdAt': createdAt.toString(),
+      'bookmarks': bookmarks,
+      'lastUpdated': lastUpdated.toString(),
+      'mediaUrls': mediaUrls,
+    };
+  }
+
+  factory Event.sampleData() {
+    return Event(
+      id: '1',
+      name: 'Sample Event',
+      owner: 'Sample Owner',
+      description: 'Sample Description',
+      location: 'Sample Location',
+      date: DateTime.now(),
+      categories: [],
+      ticketTypes: [],
+      createdBy: const Left('1'),
+      createdAt: DateTime.now(),
+      bookmarks: 0,
+      lastUpdated: DateTime.now(),
+      mediaUrls: [
+        'https://via.placeholder.com/150',
+        'https://via.placeholder.com/150',
+        'https://via.placeholder.com/150',
+      ],
+    );
+  }
 }
 
 class EventsHomeFeedResponse {

@@ -1,6 +1,4 @@
-import 'package:flutter/material.dart';
-
-import '../themes/colors.dart';
+import 'package:ticket_app_flutter/features/home/home.dart';
 
 class GradientScaffold extends StatelessWidget {
   final Widget child;
@@ -10,15 +8,17 @@ class GradientScaffold extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
-          stops: const [0.0, 0.45, 1.0],
+          stops: [0.2, 0.4, 0.6, 0.8, 0.99],
           colors: [
             AppColors.primaryDark,
-            AppColors.primaryDark.withOpacity(0.45),
-            AppColors.primaryLight,
+            Color(0xFF3d3c67),
+            Color(0xFFa16492),
+            AppColors.accentBlue,
+            AppColors.primaryDark,
           ],
         ),
       ),
