@@ -11,6 +11,8 @@ import 'package:ticket_app_flutter/shared/extensions/sized_box_num_extension.dar
 import 'package:ticket_app_flutter/shared/themes/colors.dart';
 import 'package:ticket_app_flutter/shared/themes/typography.dart';
 
+import '../../../../../shared/widgets/custom_cached_network_image.dart';
+
 class EventCard extends StatelessWidget {
   final Event event;
 
@@ -35,24 +37,12 @@ class EventCard extends StatelessWidget {
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(13),
-              child: CachedNetworkImage(
+              child: CustomCachedNetworkImage(
                 imageUrl: event.mediaUrls[0],
                 fit: BoxFit.cover,
                 width: double.infinity,
                 height: double.infinity,
-                placeholder: (context, url) => Shimmer.fromColors(
-                  baseColor: Colors.white.withOpacity(0.5),
-                  highlightColor: Colors.white.withOpacity(0.5),
-                  child: Container(
-                    width: double.infinity,
-                    height: double.infinity,
-                    color: Colors.white.withOpacity(0.1),
-                  ),
-                ),
-                errorWidget: (context, url, error) => const Center(
-                  child:
-                      Icon(Icons.broken_image, color: Colors.white70, size: 50),
-                ),
+
               ),
             ),
             Positioned(

@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 import 'package:ticket_app_flutter/features/categories/data/provider/categories_provider.dart';
+import 'package:ticket_app_flutter/features/checkout/data/providers/checkout_provider.dart';
 import 'package:ticket_app_flutter/features/home/data/providers/home_feed_provider.dart';
 import 'package:ticket_app_flutter/features/home/data/providers/view_event_provider.dart';
 import 'package:ticket_app_flutter/features/see_more/data/providers/see_more_provider.dart';
@@ -20,6 +21,9 @@ class Globals {
     ),
     ChangeNotifierProvider<SeeMoreProvider>(
       create: (_) => SeeMoreProvider(),
+    ),
+    ChangeNotifierProvider<CheckoutProvider>(
+      create: (_) => CheckoutProvider(),
     ),
   ];
 

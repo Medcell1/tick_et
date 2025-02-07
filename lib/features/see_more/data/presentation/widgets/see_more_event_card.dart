@@ -8,6 +8,7 @@ import 'package:ticket_app_flutter/core/utils/globals.dart';
 import 'package:ticket_app_flutter/features/home/data/models/event.dart';
 import 'package:ticket_app_flutter/shared/extensions/media_query_context_extension.dart';
 import 'package:ticket_app_flutter/shared/themes/typography.dart';
+import 'package:ticket_app_flutter/shared/widgets/custom_cached_network_image.dart';
 
 class SeeMoreEventCard extends StatelessWidget {
   final Event event;
@@ -46,24 +47,12 @@ class SeeMoreEventCard extends StatelessWidget {
                       topLeft: Radius.circular(12),
                       bottomLeft: Radius.circular(12),
                     ),
-                    child: CachedNetworkImage(
+                    child: CustomCachedNetworkImage(
                       imageUrl: event.mediaUrls[0],
                       width: context.screenWidth * 0.25,
                       height: context.screenHeight * 0.12,
                       fit: BoxFit.cover,
-                      placeholder: (context, url) => Shimmer.fromColors(
-                        baseColor: Colors.white.withOpacity(0.3),
-                        highlightColor: Colors.white.withOpacity(0.6),
-                        child: Container(
-                          width: context.screenWidth * 0.25,
-                          height: context.screenHeight * 0.12,
-                          color: Colors.white.withOpacity(0.2),
-                        ),
-                      ),
-                      errorWidget: (context, url, error) => const Icon(
-                        Icons.error,
-                        color: Colors.red,
-                      ),
+
                     ),
                   ),
                   const SizedBox(width: 12),

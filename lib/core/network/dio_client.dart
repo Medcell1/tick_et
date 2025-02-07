@@ -11,7 +11,7 @@ class DioService {
   DioService._internal() {
     dio = Dio(
       BaseOptions(
-        baseUrl: 'https://361d-137-255-23-65.ngrok-free.app/api',
+        baseUrl: 'http://137.255.24.240:8080/api',
         connectTimeout: const Duration(seconds: 30),
         receiveTimeout: const Duration(seconds: 30),
         headers: {

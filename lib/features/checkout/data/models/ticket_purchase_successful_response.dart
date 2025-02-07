@@ -5,13 +5,15 @@ class TicketPurchaseSuccessfulResponse {
   final String message;
   final Ticket ticket;
   final PaymentTransactionResponse paymentInfo;
-  final String emailInfo;
+  final Map<String, dynamic> emailInfo;
+  final String qrCodeUrl;
 
   TicketPurchaseSuccessfulResponse({
     required this.message,
     required this.ticket,
     required this.paymentInfo,
     required this.emailInfo,
+    required this.qrCodeUrl,
   });
 
   factory TicketPurchaseSuccessfulResponse.fromJson(Map<String, dynamic> json) {
@@ -20,7 +22,8 @@ class TicketPurchaseSuccessfulResponse {
       ticket: Ticket.fromJson(json['ticket'] as Map<String, dynamic>),
       paymentInfo: PaymentTransactionResponse.fromJson(
           json['paymentInfo'] as Map<String, dynamic>),
-      emailInfo: json['emailInfo'] as String,
+      emailInfo: json['emailInfo'] as Map<String, dynamic>,
+      qrCodeUrl: json['qrCodeUrl'] as String,
     );
   }
 
@@ -30,6 +33,7 @@ class TicketPurchaseSuccessfulResponse {
       'ticket': ticket.toJson(),
       'paymentInfo': paymentInfo.toJson(),
       'emailInfo': emailInfo,
+      'qrCodeUrl': qrCodeUrl,
     };
   }
 
@@ -37,13 +41,15 @@ class TicketPurchaseSuccessfulResponse {
     String? message,
     Ticket? ticket,
     PaymentTransactionResponse? paymentInfo,
-    String? emailInfo,
+    Map<String, dynamic>? emailInfo, // Update this line
+    String? qrCodeUrl,
   }) {
     return TicketPurchaseSuccessfulResponse(
       message: message ?? this.message,
       ticket: ticket ?? this.ticket,
       paymentInfo: paymentInfo ?? this.paymentInfo,
       emailInfo: emailInfo ?? this.emailInfo,
+      qrCodeUrl: qrCodeUrl ?? this.qrCodeUrl,
     );
   }
 }

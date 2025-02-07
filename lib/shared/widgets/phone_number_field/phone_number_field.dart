@@ -97,7 +97,7 @@ class PhoneNumberFieldState extends State<PhoneNumberField> {
                 width: 52.0,
                 child: Text(
                   '+${country.prefix}',
-                  style: size16weight500,
+                  style: AppTypography.body,
                 ),
               ),
             ],
@@ -142,7 +142,7 @@ class PhoneNumberFieldState extends State<PhoneNumberField> {
 
       widget.controller.country = value[CommonFormControlNames.country];
       widget.controller.nationalNumber =
-          value[CommonFormControlNames.phoneNumber];
+      value[CommonFormControlNames.phoneNumber];
     });
   }
 
@@ -160,8 +160,6 @@ class PhoneNumberFieldState extends State<PhoneNumberField> {
     final String country =
         '${emoji.asValidString()} +${prefix.toString().asValidString()}';
 
-    print('BOI -> ${widget.backgroundColor}');
-
     return ReactiveForm(
       formGroup: _formGroup,
       child: Row(
@@ -173,43 +171,31 @@ class PhoneNumberFieldState extends State<PhoneNumberField> {
               _openCountryPicker(context: context, title: widget.countryText);
             },
             child: Container(
-              height: 58.0,
+              height: 48.0, // Reduced height
               padding: const EdgeInsets.symmetric(
                 horizontal: 12.0,
-                vertical: 7.0,
+                vertical: 8.0, // Adjusted padding
               ),
               decoration: BoxDecoration(
                 color: widget.backgroundColor,
                 border: widget.borderColor != null
                     ? Border.all(
-                        color: widget.borderColor!,
-                      )
+                  color: widget.borderColor!,
+                )
                     : null,
-                borderRadius: BorderRadius.circular(16.0),
+                borderRadius: BorderRadius.circular(12.0), // Smaller radius
               ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(height: 2.0),
-                  Text(
-                    widget.countryText,
-                    style: size12weight500
-                        .withColor(widget.hintColor ?? greyScale50)
-                        .withHeight(16.0),
-                  ),
-                  Text(
-                    country,
-                    style: size16weight500
-                        .withColor(widget.textColor ?? greyScale00),
-                  ),
-                ],
+              child: Center(
+                child: Text(
+                  country,
+                  style: AppTypography.body
+                ),
               ),
             ),
           ),
           const SizedBox(width: 8.0),
           Expanded(
-            child: StyledTextField(
-              showError: !widget.optional,
+            child: StyledTextField.noLabel(
               name: CommonFormControlNames.phoneNumber,
               textInputType: TextInputType.number,
               inputFormatters: [FilteringTextInputFormatter.digitsOnly],

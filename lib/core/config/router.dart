@@ -1,8 +1,11 @@
 import 'package:go_router/go_router.dart';
 import 'package:ticket_app_flutter/features/categories/data/presentation/screens/categories_screen.dart';
 import 'package:ticket_app_flutter/features/checkout/data/presentation/screens/checkout_screen.dart';
+import 'package:ticket_app_flutter/features/checkout/data/presentation/screens/status/failure_screen.dart';
 import 'package:ticket_app_flutter/shared/extensions/page_transition_extension.dart';
 
+import '../../features/checkout/data/presentation/screens/status/success_screen.dart';
+import '../../features/checkout/data/providers/checkout_provider.dart';
 import '../../features/home/data/models/event.dart';
 import '../../features/home/data/presentation/screens/event_details_screen.dart';
 import '../../features/home/data/presentation/screens/event_list_screen.dart';
@@ -30,7 +33,27 @@ final GoRouter router = GoRouter(
       path: '/checkout',
       name: 'checkout',
       pageBuilder: (context, state) {
+        final status = state.uri.queryParameters['status'];
         final extra = state.extra as Map<String, dynamic>?;
+
+        if (status == 'success') {
+          final checkoutState = extra?['checkoutState'] as CheckoutState;
+          print('idgaf===>${checkoutState.status.toString()}');
+          return SuccessScreen(
+            checkoutState: checkoutState,
+          ).pageTransition(
+            state: state,
+          );
+        } else if (status == 'failed') {
+          final extra = state.extra as Map<String, dynamic>;
+          final event = extra['event'] as Event;
+          final ticketType = extra['ticketType'] as TicketType;
+          return FailureScreen(
+            event: event,
+            ticketType: ticketType,
+          ).pageTransition(state: state);
+        }
+
         final eventId = state.uri.queryParameters['eventId']!;
         final eventJson = extra?['event'] as Map<String, dynamic>;
         final event = Event.fromJson(eventJson);

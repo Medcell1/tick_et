@@ -17,7 +17,7 @@ class GradientScaffold extends StatelessWidget {
             AppColors.primaryDark,
             Color(0xFF3d3c67),
             Color(0xFFa16492),
-            AppColors.accentBlue,
+            AppColors.primaryDark,
             AppColors.primaryDark,
           ],
         ),

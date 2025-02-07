@@ -5,3 +5,7 @@ const bookmark = '$commonPath/bookmark.svg';
 const location = '$commonPath/location.svg';
 const calendar = '$commonPath/calendar.svg';
 const home = '$commonPath/home.svg';
+const clock = '$commonPath/clock.svg';
+const email = '$commonPath/email.svg';
+const download = '$commonPath/download.svg';
+const error = '$commonPath/error.svg';

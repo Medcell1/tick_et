@@ -37,7 +37,18 @@ class PaymentTransaction {
     this.currency = 'XOF',
     required this.createdAt,
   });
-
+  factory PaymentTransaction.sample() {
+    return PaymentTransaction(
+      gateway: PaymentGateway.sckaler,
+      provider: PaymentProvider.mtn,
+      country: Country.BJ,
+      tel: '2290123456790',
+      amount: 1000.0,
+      description: 'Pool party ticket 1x',
+      currency: 'XOF',
+      createdAt: DateTime.now(),
+    );
+  }
   factory PaymentTransaction.fromJson(Map<String, dynamic> json) {
     return PaymentTransaction(
       gateway: PaymentGateway.values.firstWhere(
@@ -139,7 +150,15 @@ class PaymentTransactionResponse {
           : DateTime.now(),
     );
   }
-
+  factory PaymentTransactionResponse.sample() {
+    return PaymentTransactionResponse(
+      msg: 'SUCCESS',
+      status: 'SUCCESS',
+      transactionId: 'f4f15b3d-bc2c-4b0f-be75-8891dc5e47c8',
+      paymentTransactionBody: PaymentTransaction.sample(),
+      createdAt: DateTime.now(),
+    );
+  }
   Map<String, dynamic> toJson() {
     return {
       'msg': msg,

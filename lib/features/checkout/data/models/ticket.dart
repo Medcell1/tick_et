@@ -47,6 +47,16 @@ class Ticket {
       'ticketNumber': ticketNumber,
     };
   }
+
+  factory Ticket.sampleData() {
+    return Ticket(
+        id: '0',
+        event: Right(Event.sampleData()),
+        ticketType: Right(TicketType.sampleData()),
+        issuedTo: TicketOwner.sampleData(),
+        issuedAt: DateTime.now(),
+        ticketNumber: 'ticketNumber');
+  }
 }
 
 class TicketRequest {

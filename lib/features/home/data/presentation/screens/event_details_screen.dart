@@ -11,6 +11,7 @@ import 'package:ticket_app_flutter/shared/extensions/media_query_context_extensi
 import 'package:ticket_app_flutter/shared/extensions/sized_box_num_extension.dart';
 import 'package:ticket_app_flutter/shared/themes/typography.dart';
 import 'package:ticket_app_flutter/shared/widgets/custom_button.dart';
+import 'package:ticket_app_flutter/shared/widgets/custom_cached_network_image.dart';
 import 'package:ticket_app_flutter/shared/widgets/gradient_scaffold.dart';
 import 'package:ticket_app_flutter/shared/widgets/svg_icon.dart';
 
@@ -298,23 +299,9 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
               ),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(16),
-                child: CachedNetworkImage(
+                child: CustomCachedNetworkImage(
                   imageUrl: event.mediaUrls[0],
                   fit: BoxFit.cover,
-                  placeholder: (context, url) => Shimmer.fromColors(
-                    baseColor: Colors.white.withOpacity(0.3),
-                    highlightColor: Colors.white.withOpacity(0.6),
-                    child: Container(
-                      width: double.infinity,
-                      height: context.screenHeight * 0.35,
-                      decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.2),
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                    ),
-                  ),
-                  errorWidget: (context, url, error) =>
-                      const Icon(Icons.error, color: Colors.red),
                 ),
               ),
             ),

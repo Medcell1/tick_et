@@ -11,6 +11,7 @@ class StyledTextField<T> extends StatefulWidget {
   final Color? borderColor;
   final Color? hintColor;
   final Color? textColor;
+
   //
   final String? iconAssetName;
   final TextInputType textInputType;
@@ -303,7 +304,7 @@ class _StyledTextFieldState<T> extends State<StyledTextField<T>> {
                   color: hasError ? redColor : valueColor,
                 ),
                 obscureText: _obscurable,
-                cursorColor: primaryColor,
+                cursorColor: AppColors.accentPink,
                 inputFormatters: [
                   LengthLimitingTextInputFormatter(widget.maxLength),
                   ...widget.inputFormatters ?? [],
@@ -321,19 +322,17 @@ class _StyledTextFieldState<T> extends State<StyledTextField<T>> {
                       .withHeight(16)
                       .withColor(hasError ? redColor : valueColor),
                   suffixStyle:
-                      size16weight500.withHeight(16).withColor(greyScale00),
+                  size16weight500.withHeight(16).withColor(greyScale00),
                   hoverColor: Colors.transparent,
                   filled: true,
                   fillColor: isDisabled
                       ? disabledTextFieldColor
                       : (widget.backgroundColor ?? enabledTextFieldColor),
                   errorMaxLines: 2,
-                  contentPadding: widget._noLabel
-                      ? null
-                      : EdgeInsets.symmetric(
-                          horizontal: 12.0,
-                          vertical: verticalPadding,
-                        ),
+                  contentPadding: const EdgeInsets.symmetric(
+                    horizontal: 12.0,
+                    vertical: 12.0,
+                  ),
                   counterStyle: const TextStyle(
                     height: double.minPositive,
                   ),
@@ -341,20 +340,19 @@ class _StyledTextFieldState<T> extends State<StyledTextField<T>> {
                   suffixIcon: _buildSuffixIcon(),
                   prefixIcon: widget.iconAssetName != null
                       ? Container(
-                          width: 40.0,
-                          margin: const EdgeInsets.only(left: 20.0),
-                          alignment: Alignment.centerLeft,
-                          child: SvgPicture.asset(
-                            'assets/text-field/${widget.iconAssetName}.svg',
-                          ),
-                        )
+                    width: 40.0,
+                    margin: const EdgeInsets.only(left: 20.0),
+                    alignment: Alignment.centerLeft,
+                    child: SvgPicture.asset(
+                      'assets/text-field/${widget.iconAssetName}.svg',
+                    ),
+                  )
                       : widget.prefix,
-                  border: UnderlineInputBorder(
-                    borderRadius: BorderRadius.circular(widget.borderRadius),
-                    borderSide: BorderSide.none,
-                  ),
+                  border: InputBorder.none,
+                  enabledBorder: InputBorder.none,
+                  focusedBorder: InputBorder.none,
                   labelText:
-                      widget._noLabel ? null : (widget.hintText ?? widget.name),
+                  widget._noLabel ? null : (widget.hintText ?? widget.name),
                   labelStyle: size15weight500.copyWith(
                     color: labelColor,
                     height: labelHeight,

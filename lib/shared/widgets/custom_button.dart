@@ -4,11 +4,13 @@ import 'package:ticket_app_flutter/shared/themes/colors.dart';
 class CustomButton extends StatefulWidget {
   final VoidCallback? onPressed;
   final Widget content;
+  final bool isLoading;
 
   const CustomButton({
     super.key,
     this.onPressed,
     required this.content,
+    this.isLoading = false,
   });
 
   @override
@@ -40,15 +42,18 @@ class _CustomButtonState extends State<CustomButton>
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: widget.onPressed,
+      onTap: widget.isLoading ? null : widget.onPressed,
       child: AnimatedBuilder(
         animation: _animation,
         builder: (context, child) {
           return Container(
-            padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 30),
+            padding: const EdgeInsets.symmetric(
+              vertical: 12,
+              horizontal: 20,
+            ),
             decoration: BoxDecoration(
               gradient: LinearGradient(
-                colors: widget.onPressed == null
+                colors: widget.onPressed == null || widget.isLoading
                     ? [AppColors.accentPink, Colors.blue]
                     : [AppColors.primaryDark, AppColors.accentPink],
                 begin: Alignment.topLeft,
@@ -58,7 +63,7 @@ class _CustomButtonState extends State<CustomButton>
               border: Border.all(
                 width: 2,
                 style: BorderStyle.solid,
-                color: widget.onPressed != null
+                color: widget.onPressed != null && !widget.isLoading
                     ? Colors.white.withOpacity(0.5)
                     : Colors.transparent,
               ),
@@ -71,7 +76,7 @@ class _CustomButtonState extends State<CustomButton>
                   color: Colors.white.withOpacity(0.7),
                   blurRadius: 6,
                 ),
-                if (widget.onPressed != null)
+                if (widget.onPressed != null && !widget.isLoading)
                   BoxShadow(
                     color: AppColors.accentPink.withOpacity(0.9),
                     blurRadius: _animation.value,
@@ -80,7 +85,16 @@ class _CustomButtonState extends State<CustomButton>
               ],
             ),
             child: Center(
-              child: widget.content,
+              child: widget.isLoading
+                  ? const SizedBox(
+                      width: 20,
+                      height: 20,
+                      child: CircularProgressIndicator(
+                        color: Colors.white,
+                        strokeWidth: 2,
+                      ),
+                    )
+                  : widget.content,
             ),
           );
         },

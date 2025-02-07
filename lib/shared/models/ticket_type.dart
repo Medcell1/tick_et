@@ -36,4 +36,14 @@ class TicketType {
       'createdBy': createdBy,
     };
   }
+
+  factory TicketType.sampleData() {
+    return TicketType(id: '0',
+      price: 20.00,
+      name: 'name',
+      description: 'description',
+      codePrefix: 'codePrefix',
+      createdBy: 'createdBy',
+    );
+  }
 }
